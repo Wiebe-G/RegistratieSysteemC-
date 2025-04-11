@@ -29,105 +29,125 @@ namespace WiebeRonnieRegistratie
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlTabData = new System.Windows.Forms.TableLayoutPanel();
-            this.lblName = new System.Windows.Forms.Label();
-            this.lblAdres = new System.Windows.Forms.Label();
-            this.lblWoonplaats = new System.Windows.Forms.Label();
-            this.lblPrestaties = new System.Windows.Forms.Label();
-            this.lblCommentaar = new System.Windows.Forms.Label();
-            this.pnlTabData.SuspendLayout();
-            this.SuspendLayout();
+            pnlTabData = new TableLayoutPanel();
+            lblWoonplaats = new Label();
+            lblName = new Label();
+            lblAdres = new Label();
+            lblPrestaties = new Label();
+            lblCommentaar = new Label();
+            btnNewRij = new Button();
+            pnlTabData.SuspendLayout();
+            SuspendLayout();
             // 
             // pnlTabData
             // 
-            this.pnlTabData.ColumnCount = 5;
-            this.pnlTabData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.41748F));
-            this.pnlTabData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.4174767F));
-            this.pnlTabData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.4174767F));
-            this.pnlTabData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.4174767F));
-            this.pnlTabData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.3300972F));
-            this.pnlTabData.Controls.Add(this.lblName, 0, 0);
-            this.pnlTabData.Controls.Add(this.lblAdres, 1, 0);
-            this.pnlTabData.Controls.Add(this.lblWoonplaats, 2, 0);
-            this.pnlTabData.Controls.Add(this.lblPrestaties, 3, 0);
-            this.pnlTabData.Controls.Add(this.lblCommentaar, 4, 0);
-            this.pnlTabData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTabData.Location = new System.Drawing.Point(0, 0);
-            this.pnlTabData.Name = "pnlTabData";
-            this.pnlTabData.RowCount = 3;
-            this.pnlTabData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.pnlTabData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.pnlTabData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.pnlTabData.Size = new System.Drawing.Size(1233, 526);
-            this.pnlTabData.TabIndex = 0;
-            // 
-            // lblName
-            // 
-            this.lblName.AutoSize = true;
-            this.lblName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblName.Location = new System.Drawing.Point(3, 0);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(233, 52);
-            this.lblName.TabIndex = 0;
-            this.lblName.Text = "Naam:";
-            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblAdres
-            // 
-            this.lblAdres.AutoSize = true;
-            this.lblAdres.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAdres.Location = new System.Drawing.Point(242, 0);
-            this.lblAdres.Name = "lblAdres";
-            this.lblAdres.Size = new System.Drawing.Size(233, 52);
-            this.lblAdres.TabIndex = 1;
-            this.lblAdres.Text = "Adres:";
-            this.lblAdres.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            pnlTabData.ColumnCount = 5;
+            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.41748F));
+            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.4174767F));
+            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.4174767F));
+            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.4174767F));
+            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.3300972F));
+            pnlTabData.Controls.Add(lblWoonplaats, 2, 0);
+            pnlTabData.Controls.Add(lblName, 0, 0);
+            pnlTabData.Controls.Add(lblAdres, 1, 0);
+            pnlTabData.Controls.Add(lblPrestaties, 3, 0);
+            pnlTabData.Controls.Add(lblCommentaar, 4, 0);
+            pnlTabData.Controls.Add(btnNewRij, 4, 9);
+            pnlTabData.Dock = DockStyle.Fill;
+            pnlTabData.Location = new Point(0, 0);
+            pnlTabData.Name = "pnlTabData";
+            pnlTabData.RowCount = 10;
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.Size = new Size(1233, 526);
+            pnlTabData.TabIndex = 0;
             // 
             // lblWoonplaats
             // 
-            this.lblWoonplaats.AutoSize = true;
-            this.lblWoonplaats.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblWoonplaats.Location = new System.Drawing.Point(481, 0);
-            this.lblWoonplaats.Name = "lblWoonplaats";
-            this.lblWoonplaats.Size = new System.Drawing.Size(233, 52);
-            this.lblWoonplaats.TabIndex = 2;
-            this.lblWoonplaats.Text = "Woonplaats:";
-            this.lblWoonplaats.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblWoonplaats.AutoSize = true;
+            lblWoonplaats.Dock = DockStyle.Fill;
+            lblWoonplaats.Location = new Point(481, 0);
+            lblWoonplaats.Name = "lblWoonplaats";
+            lblWoonplaats.Size = new Size(233, 52);
+            lblWoonplaats.TabIndex = 6;
+            lblWoonplaats.Text = "Woonplaats:";
+            lblWoonplaats.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblName
+            // 
+            lblName.AutoSize = true;
+            lblName.Dock = DockStyle.Fill;
+            lblName.Location = new Point(3, 0);
+            lblName.Name = "lblName";
+            lblName.Size = new Size(233, 52);
+            lblName.TabIndex = 0;
+            lblName.Text = "Naam:";
+            lblName.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblAdres
+            // 
+            lblAdres.AutoSize = true;
+            lblAdres.Dock = DockStyle.Fill;
+            lblAdres.Location = new Point(242, 0);
+            lblAdres.Name = "lblAdres";
+            lblAdres.Size = new Size(233, 52);
+            lblAdres.TabIndex = 1;
+            lblAdres.Text = "Adres:";
+            lblAdres.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblPrestaties
             // 
-            this.lblPrestaties.AutoSize = true;
-            this.lblPrestaties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrestaties.Location = new System.Drawing.Point(720, 0);
-            this.lblPrestaties.Name = "lblPrestaties";
-            this.lblPrestaties.Size = new System.Drawing.Size(233, 52);
-            this.lblPrestaties.TabIndex = 3;
-            this.lblPrestaties.Text = "Prestaties";
-            this.lblPrestaties.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblPrestaties.AutoSize = true;
+            lblPrestaties.Dock = DockStyle.Fill;
+            lblPrestaties.Location = new Point(720, 0);
+            lblPrestaties.Name = "lblPrestaties";
+            lblPrestaties.Size = new Size(233, 52);
+            lblPrestaties.TabIndex = 3;
+            lblPrestaties.Text = "Prestaties";
+            lblPrestaties.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblCommentaar
             // 
-            this.lblCommentaar.AutoSize = true;
-            this.lblCommentaar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCommentaar.Location = new System.Drawing.Point(959, 0);
-            this.lblCommentaar.Name = "lblCommentaar";
-            this.lblCommentaar.Size = new System.Drawing.Size(271, 52);
-            this.lblCommentaar.TabIndex = 4;
-            this.lblCommentaar.Text = "Speciaal commentaar: ";
-            this.lblCommentaar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblCommentaar.AutoSize = true;
+            lblCommentaar.Dock = DockStyle.Fill;
+            lblCommentaar.Location = new Point(959, 0);
+            lblCommentaar.Name = "lblCommentaar";
+            lblCommentaar.Size = new Size(271, 52);
+            lblCommentaar.TabIndex = 4;
+            lblCommentaar.Text = "Speciaal commentaar: ";
+            lblCommentaar.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnNewRij
+            // 
+            btnNewRij.Dock = DockStyle.Fill;
+            btnNewRij.Location = new Point(959, 471);
+            btnNewRij.Name = "btnNewRij";
+            btnNewRij.Size = new Size(271, 52);
+            btnNewRij.TabIndex = 5;
+            btnNewRij.Text = "Nieuwe rij toevoegen";
+            btnNewRij.UseVisualStyleBackColor = true;
+            btnNewRij.Click += btnNewRij_Click;
             // 
             // frmData
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(1233, 526);
-            this.Controls.Add(this.pnlTabData);
-            this.Name = "frmData";
-            this.Text = "Hier staat de data";
-            this.pnlTabData.ResumeLayout(false);
-            this.pnlTabData.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlDark;
+            ClientSize = new Size(1233, 526);
+            Controls.Add(pnlTabData);
+            Name = "frmData";
+            Text = "Hier staat de data";
+            pnlTabData.ResumeLayout(false);
+            pnlTabData.PerformLayout();
+            ResumeLayout(false);
 
         }
 
@@ -136,8 +156,9 @@ namespace WiebeRonnieRegistratie
         private System.Windows.Forms.TableLayoutPanel pnlTabData;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblAdres;
-        private System.Windows.Forms.Label lblWoonplaats;
         private System.Windows.Forms.Label lblPrestaties;
         private System.Windows.Forms.Label lblCommentaar;
+        private Button btnNewRij;
+        private Label lblWoonplaats;
     }
 }

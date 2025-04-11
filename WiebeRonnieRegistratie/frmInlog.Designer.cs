@@ -63,6 +63,7 @@
             txtName.Size = new Size(1060, 171);
             txtName.TabIndex = 0;
             txtName.TextAlign = HorizontalAlignment.Center;
+
             txtName.KeyDown += txtName_KeyDown;
             // 
             // txtPassword
