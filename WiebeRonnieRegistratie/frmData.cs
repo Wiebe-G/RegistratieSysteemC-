@@ -34,7 +34,6 @@ namespace WiebeRonnieRegistratie
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Fout bij verbinden met database: {ex.Message}");
                     MessageBox.Show($"Fout bij verbinden met database: {ex.Message}", "Databasefout", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
@@ -56,7 +55,8 @@ namespace WiebeRonnieRegistratie
             {
                 //super gevaarlijk
                 //pnlTabData.Controls.Clear();
-                //super gevaarlijk
+                //super gevaarlijk (haalt de button weg)
+                // wat dit doet, is het haalt onze controls weg, en zet de nieuwe controls erin
                 pnlTabData.RowStyles.Clear();
                 pnlTabData.RowCount = 0;
                 pnlTabData.ColumnCount = dataTable.Columns.Count - 1; // id niet tonen
@@ -87,21 +87,20 @@ namespace WiebeRonnieRegistratie
                         {
                             TextBox txtbox = new TextBox
                             {
-                                //hier wordt er nieuwe textboxes gemaakt in de nieuwe row en in de 1ste kolom wat dan doorgaat naar de 5de kolom
+                                //hier wordt er nieuwe textboxes gemaakt in de nieuwe row en in de 1ste kolom wat dan doorgaat naar de laatste kolom
                                 Name = $"textbox_{i}_{j}_{dataTable.Columns[j].ColumnName}",
                                 //hier pakt hij de text uit de database en vult het in de nieuwe textboxes
                                 Text = dataTable.Rows[i][j].ToString(),
                                 Dock = DockStyle.Fill,
-                                ReadOnly = false
+                                ReadOnly = false // zodat de gebruiker de data ook echt kan aanpassen
                             };
 
-                            txtbox.KeyDown += veranderData_KeyDown;
+                            txtbox.KeyDown += veranderData_KeyDown; // keydown event, dus dat de data verandert als je op enter drukt
 
                             pnlTabData.Controls.Add(txtbox, j - 1, i + 1); // +1 omdat headers op rij 0 staan
                         }
                         catch (Exception ex)
                         {
-                            //MessageBox.Show($"Fout bij het toevoegen van tekstvak: {ex.Message}");
                             MessageBox.Show($"Fout bij het toevoegen van tekstvak: {ex.Message}", "Fout Tekstvak", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
@@ -111,47 +110,73 @@ namespace WiebeRonnieRegistratie
             {
                 MessageBox.Show("Geen data gevonden in de database.", "Geen Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+
         }
 
         // onderstaande method is waar de sql query moet komen om de data in de textboxes ook echt aan te passen
         // dit moet op elke textbox worden gezet
         private void veranderData_KeyDown(object sender, KeyEventArgs e)
         {
-            // wat de query moet doen: lees data uit de textbox, 
-            // pak die data, en zet het in de database met een update statement
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
+
+                // Validate the sender
                 TextBox tb = sender as TextBox;
                 if (tb == null) return;
 
-                // Verwachte naam: textbox_row_col_colName
+                // Parse TextBox name into parts
                 string[] parts = tb.Name.Split('_');
-                if (parts.Length < 4) return;
+                if (parts.Length < 4 || !int.TryParse(parts[1], out int rowIndex))
+                {
+                    MessageBox.Show("Ongeldige TextBox naam of rijindex.");
+                    return;
+                }
 
-                int rowIndex = int.Parse(parts[1]);
                 string kolomNaam = parts[3];
                 string nieuweWaarde = tb.Text;
 
-                int id = Convert.ToInt32(dataTable.Rows[rowIndex]["id"]);
+                // Validate row index and data
+                if (rowIndex < 0 || rowIndex >= dataTable.Rows.Count) // Changed <= to >=
+                {
+                    MessageBox.Show("Rijindex buiten bereik.");
+                    return;
+                }
 
+                int id;
+                try
+                {
+                    id = Convert.ToInt32(dataTable.Rows[rowIndex]["id"]);
+                }
+                finally
+                {
+                    // idk lol
+                }
+
+
+                // Build SQL query
+                string query = $"UPDATE registratiedata SET {kolomNaam} = @nieuweWaarde WHERE id = @id";
+
+                // Execute database update
                 using (MySqlConnection conn = new MySqlConnection(connStr))
                 {
                     try
                     {
                         conn.Open();
-                        //hier wordt het data opgeslagen en dan gestuurd naar de database
-
-                        using (MySqlCommand cmd = new MySqlCommand())
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
                         {
-                            cmd.Parameters.AddWithValue("@waarde", nieuweWaarde);
+                            cmd.Parameters.AddWithValue("@nieuweWaarde", nieuweWaarde);
                             cmd.Parameters.AddWithValue("@id", id);
+
                             int resultaat = cmd.ExecuteNonQuery();
-                            //hier laat hij een messagebox zien dat het is bijgewerkt
                             if (resultaat > 0)
+                            {
                                 MessageBox.Show($"✅ '{kolomNaam}' bij ID {id} is bijgewerkt.");
-                            else // onmogelijk te triggeren :thumbsup:
+                            }
+                            else
+                            {
                                 MessageBox.Show("Geen wijzigingen doorgevoerd.", "Let op", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -161,28 +186,37 @@ namespace WiebeRonnieRegistratie
                 }
             }
         }
+
         private void btnNewRij_Click(object sender, EventArgs e)
         {
-            int newRowIndex = pnlTabData.RowCount; // Add at the bottom
+            // Step 1: Add a new blank row to `dataTable`
+            DataRow newRow = dataTable.NewRow(); // Create a new row based on the schema of `dataTable`
+            dataTable.Rows.Add(newRow); // Add it to `dataTable`
 
-            pnlTabData.RowCount++;
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            // Step 2: Calculate the new row index based on `dataTable` size
+            int newRowIndex = dataTable.Rows.Count - 1; // Last row in `dataTable`
 
-            for (int j = 1; j < dataTable.Columns.Count; j++) // skip id
+            // Step 3: Dynamically add controls to `pnlTabData`
+            for (int j = 1; j < dataTable.Columns.Count; j++) // Skip `id` column
             {
+                pnlTabData.RowCount++; // Increment row count in the panel
+                pnlTabData.RowStyles.Add(new RowStyle(SizeType.AutoSize)); // Add a new row style
+
                 try
                 {
-                    TextBox txtbox = new TextBox
+                    TextBox txtbox = new TextBox // Create a new TextBox
                     {
-                        Name = $"textbox_{newRowIndex}_{j}_",
-                        Text = "",
+                        Name = $"textbox_{newRowIndex}_{j}_", // Name includes new row index
+                        Text = "", // Set empty text for the new row
                         Dock = DockStyle.Fill,
-                        ReadOnly = false
+                        ReadOnly = false // Allow editing
                     };
 
+                    // Step 4: Attach the KeyDown event to handle updates
                     txtbox.KeyDown += veranderData_KeyDown;
 
-                    pnlTabData.Controls.Add(txtbox, j - 1, newRowIndex); // use newRowIndex directly
+                    // Step 5: Add the TextBox to the panel
+                    pnlTabData.Controls.Add(txtbox, j - 1, newRowIndex + 1); // `+1` because headers are in row 0
                 }
                 catch (Exception ex)
                 {
@@ -190,5 +224,6 @@ namespace WiebeRonnieRegistratie
                 }
             }
         }
+
     }
 }
