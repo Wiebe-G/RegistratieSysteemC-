@@ -115,43 +115,48 @@ namespace WiebeRonnieRegistratie
 
         // onderstaande method is waar de sql query moet komen om de data in de textboxes ook echt aan te passen
         // dit moet op elke textbox worden gezet
+        /*
+         * TODO:
+         * Knop voor nieuwe rij moet onder de nieuwe rij, niet rij onder de knop
+         * Data moet in de nieuwe rij moeten worden gezet en dat moet ook naar de db worden gevoerd
+         * 
+        */
         private void veranderData_KeyDown(object sender, KeyEventArgs e)
         {
+
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
 
-                // Validate the sender
                 TextBox tb = sender as TextBox;
                 if (tb == null) return;
 
-                // Parse TextBox name into parts
                 string[] parts = tb.Name.Split('_');
-                if (parts.Length < 4 || !int.TryParse(parts[1], out int rowIndex))
+                if (parts.Length < 3 || !int.TryParse(parts[1], out int rowIndex))
                 {
                     MessageBox.Show("Ongeldige TextBox naam of rijindex.");
                     return;
                 }
 
-                string kolomNaam = parts[3];
+                string kolomNaam = parts[2];
                 string nieuweWaarde = tb.Text;
 
-                // Validate row index and data
-                if (rowIndex < 0 || rowIndex >= dataTable.Rows.Count) // Changed <= to >=
+                if (rowIndex < 0 || rowIndex >= dataTable.Rows.Count)
                 {
                     MessageBox.Show("Rijindex buiten bereik.");
                     return;
                 }
 
-                int id;
-                try
+                // Check if the row exists in the DataTable
+                if (dataTable.Rows.Count <= rowIndex)
                 {
-                    id = Convert.ToInt32(dataTable.Rows[rowIndex]["id"]);
+                    MessageBox.Show("De rij bestaat niet in de DataTable.");
+                    return;
                 }
-                finally
-                {
-                    // idk lol
-                }
+
+                // Get the ID from the DataRow.  Handle the case where it might be null.
+                object idValue = dataTable.Rows[rowIndex]["id"];
+                int id = Convert.ToInt32(idValue);
 
 
                 // Build SQL query
@@ -173,57 +178,132 @@ namespace WiebeRonnieRegistratie
                             {
                                 MessageBox.Show($"✅ '{kolomNaam}' bij ID {id} is bijgewerkt.");
                             }
+
                             else
                             {
                                 MessageBox.Show("Geen wijzigingen doorgevoerd.", "Let op", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
                     }
+
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Fout bij updaten: {ex.Message}", "Database Update Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+                if (idValue == null || idValue == DBNull.Value)
+                {
+                    MessageBox.Show("De ID voor deze rij is niet ingesteld.  De rij kan niet worden bijgewerkt.", "ID Niet Beschikbaar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Stop processing if ID is missing.
+                }
+
             }
         }
 
         private void btnNewRij_Click(object sender, EventArgs e)
         {
-            // Step 1: Add a new blank row to `dataTable`
-            DataRow newRow = dataTable.NewRow(); // Create a new row based on the schema of `dataTable`
-            dataTable.Rows.Add(newRow); // Add it to `dataTable`
+            Button btnNieuweRij = new Button();
+            btnNieuweRij.Text = "Nieuwe Rij Toevoegen";
+            btnNieuweRij.Name = "btnNieuweRij";
+            btnNieuweRij.Dock = DockStyle.Top;
+            btnNieuweRij.AutoSize = true;
 
-            // Step 2: Calculate the new row index based on `dataTable` size
-            int newRowIndex = dataTable.Rows.Count - 1; // Last row in `dataTable`
-
-            // Step 3: Dynamically add controls to `pnlTabData`
-            for (int j = 1; j < dataTable.Columns.Count; j++) // Skip `id` column
+            Control previousButton = pnlTabData.Controls.Find("btnNewRij", true).FirstOrDefault();
+            if (previousButton != null)
             {
-                pnlTabData.RowCount++; // Increment row count in the panel
-                pnlTabData.RowStyles.Add(new RowStyle(SizeType.AutoSize)); // Add a new row style
+                pnlTabData.Controls.Remove(previousButton);
+                previousButton.Dispose();
+            }
 
+            btnNieuweRij.Click += btnNewRij_Click;
+            pnlTabData.RowCount++;
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            pnlTabData.Controls.Add(btnNieuweRij, 0, pnlTabData.RowCount - 1);
+            pnlTabData.SetColumnSpan(btnNieuweRij, dataTable.Columns.Count);
+            // Nieuwe rij toevoegen aan de database
+            string insertQuery = "INSERT INTO registratiedata (naam, adres, woonplaats, prestaties, comments) VALUES (@naam, @adres, @woonplaats, @prestaties, @comments); SELECT LAST_INSERT_ID();";
+
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
                 try
                 {
-                    TextBox txtbox = new TextBox // Create a new TextBox
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
                     {
-                        Name = $"textbox_{newRowIndex}_{j}_", // Name includes new row index
-                        Text = "", // Set empty text for the new row
-                        Dock = DockStyle.Fill,
-                        ReadOnly = false // Allow editing
-                    };
+                        // Voor nieuwe rijen zijn de velden initieel leeg
+                        cmd.Parameters.AddWithValue("@naam", "");
+                        cmd.Parameters.AddWithValue("@adres", "");
+                        cmd.Parameters.AddWithValue("@woonplaats", "");
+                        cmd.Parameters.AddWithValue("@prestaties", "");
+                        cmd.Parameters.AddWithValue("@comments", "");
 
-                    // Step 4: Attach the KeyDown event to handle updates
-                    txtbox.KeyDown += veranderData_KeyDown;
+                        // Voer de query uit en haal de nieuwe ID op
+                        int newId = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Step 5: Add the TextBox to the panel
-                    pnlTabData.Controls.Add(txtbox, j - 1, newRowIndex + 1); // `+1` because headers are in row 0
+                        // Maak een nieuwe DataRow aan en vul deze met de (nog lege) data en de nieuwe ID
+                        DataRow newRow = dataTable.NewRow();
+                        newRow["id"] = newId; // Stel de nieuwe ID in
+                        dataTable.Rows.Add(newRow);
+
+                        int newRowIndex = dataTable.Rows.Count - 1;
+
+                        // Voeg de nieuwe rij visueel toe aan het panel
+                        pnlTabData.RowCount++;
+                        pnlTabData.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+                        for (int j = 1; j < dataTable.Columns.Count; j++)
+                        {
+                            try
+                            {
+                                TextBox txtbox = new TextBox
+                                {
+                                    Name = $"textbox_{newRowIndex}_{j}_{dataTable.Columns[j].ColumnName}",
+                                    Text = "",
+                                    Dock = DockStyle.Fill,
+                                    ReadOnly = false
+                                };
+                                txtbox.KeyDown += veranderData_KeyDown;
+                                pnlTabData.Controls.Add(txtbox, j - 1, newRowIndex + 1);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Fout bij het toevoegen van tekstvak: {ex.Message}", "Fout Tekstvak", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+
+                        // Verwijder de oude knop en voeg de nieuwe knop toe onder de nieuwe 
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Fout bij het toevoegen van tekstvak: {ex.Message}", "Fout Tekstvak", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Fout bij het toevoegen van een nieuwe rij naar de database: {ex.Message}", "Database Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    conn.Close();
                 }
             }
         }
-
     }
 }
+/* AI
+                Button btnNieuweRij = new Button();
+                btnNieuweRij.Text = "Nieuwe Rij Toevoegen";
+                btnNieuweRij.Name = "btnNieuweRij";
+                btnNieuweRij.Dock = DockStyle.Top;
+                btnNieuweRij.AutoSize = true;
+
+                Control previousButton = pnlTabData.Controls.Find("btnNewRij", true).FirstOrDefault();
+                if (previousButton != null)
+                {
+                    pnlTabData.Controls.Remove(previousButton);
+                    previousButton.Dispose();
+                }
+
+                btnNieuweRij.Click += btnNewRij_Click;
+                pnlTabData.RowCount++;
+                pnlTabData.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                pnlTabData.Controls.Add(btnNieuweRij, 0, pnlTabData.RowCount - 1);
+                pnlTabData.SetColumnSpan(btnNieuweRij, dataTable.Columns.Count);
+
+                */
