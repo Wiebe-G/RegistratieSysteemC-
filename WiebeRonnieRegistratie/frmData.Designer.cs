@@ -66,7 +66,7 @@ namespace WiebeRonnieRegistratie
             btnNewRij.Name = "btnNewRij";
             btnNewRij.Size = new Size(233, 46);
             btnNewRij.TabIndex = 5;
-            btnNewRij.Text = "Nieuwe rij toevoegen";
+            btnNewRij.Text = "Uitleg over het programma\r\nen ook wat wij hebben geprobeerd";
             btnNewRij.UseVisualStyleBackColor = true;
             btnNewRij.Click += btnNewRij_Click;
             // 

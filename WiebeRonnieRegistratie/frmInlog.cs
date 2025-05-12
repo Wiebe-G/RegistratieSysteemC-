@@ -32,7 +32,7 @@ namespace WiebeRonnieRegistratie
                     if (lezer.HasRows)
                     {
                         MessageBox.Show("Succesvolle login!");
-                        frmData main = new frmData();
+                        frmNamen main = new frmNamen();
                         main.Show();
                         this.Hide();
                     }

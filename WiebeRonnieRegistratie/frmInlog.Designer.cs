@@ -49,7 +49,7 @@
             pnlTabInlog.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             pnlTabInlog.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             pnlTabInlog.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            pnlTabInlog.Size = new Size(1066, 533);
+            pnlTabInlog.Size = new Size(1261, 529);
             pnlTabInlog.TabIndex = 0;
             // 
             // txtName
@@ -60,22 +60,21 @@
             txtName.Multiline = true;
             txtName.Name = "txtName";
             txtName.PlaceholderText = "Gebruikersnaam";
-            txtName.Size = new Size(1060, 171);
+            txtName.Size = new Size(1255, 170);
             txtName.TabIndex = 0;
             txtName.TextAlign = HorizontalAlignment.Center;
-
             txtName.KeyDown += txtName_KeyDown;
             // 
             // txtPassword
             // 
             txtPassword.BackColor = SystemColors.ButtonFace;
             txtPassword.Dock = DockStyle.Fill;
-            txtPassword.Location = new Point(3, 180);
+            txtPassword.Location = new Point(3, 179);
             txtPassword.Multiline = true;
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.PlaceholderText = "Vul hier uw wachtwoord in";
-            txtPassword.Size = new Size(1060, 171);
+            txtPassword.Size = new Size(1255, 170);
             txtPassword.TabIndex = 1;
             txtPassword.TextAlign = HorizontalAlignment.Center;
             txtPassword.KeyDown += txtPassword_KeyDown;
@@ -84,9 +83,9 @@
             // 
             btnInlog.BackColor = SystemColors.ButtonFace;
             btnInlog.Dock = DockStyle.Fill;
-            btnInlog.Location = new Point(3, 357);
+            btnInlog.Location = new Point(3, 355);
             btnInlog.Name = "btnInlog";
-            btnInlog.Size = new Size(1060, 173);
+            btnInlog.Size = new Size(1255, 171);
             btnInlog.TabIndex = 2;
             btnInlog.Text = "Log in";
             btnInlog.UseVisualStyleBackColor = false;
@@ -97,7 +96,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDark;
-            ClientSize = new Size(1066, 533);
+            ClientSize = new Size(1261, 529);
             Controls.Add(pnlTabInlog);
             Name = "frmInlog";
             Text = "Inloggen";
