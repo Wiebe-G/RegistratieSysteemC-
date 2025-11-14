@@ -5,7 +5,7 @@ namespace WiebeRonnieRegistratie
 {
     public partial class frmInlog : Form
     {
-        public static string connStr = "Server=localhost;Database=registratie;Uid=root;Pwd=root;";
+        public static string connStr = "Server=localhost;Database=registratie;Uid=yourUid;Pwd=yourpass;";
         public frmInlog()
         {
             InitializeComponent();

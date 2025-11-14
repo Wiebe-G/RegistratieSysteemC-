@@ -30,45 +30,90 @@ namespace WiebeRonnieRegistratie
         private void InitializeComponent()
         {
             pnlTabData = new TableLayoutPanel();
-            btnNewRij = new Button();
+            pnlData1 = new Panel();
+            lblPrestaties = new Label();
+            lblWoonplaats = new Label();
+            lblAdres = new Label();
+            lblNaam = new Label();
+            lblComment = new Label();
             pnlTabData.SuspendLayout();
+            pnlData1.SuspendLayout();
             SuspendLayout();
             // 
             // pnlTabData
             // 
-            pnlTabData.ColumnCount = 5;
-            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.41748F));
-            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.4174767F));
-            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.4174767F));
-            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.4174767F));
-            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.3300972F));
-            pnlTabData.Controls.Add(btnNewRij, 4, 9);
+            pnlTabData.ColumnCount = 1;
+            pnlTabData.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            pnlTabData.Controls.Add(pnlData1, 0, 0);
+            pnlTabData.Controls.Add(lblComment, 0, 1);
             pnlTabData.Dock = DockStyle.Fill;
             pnlTabData.Location = new Point(0, 0);
             pnlTabData.Name = "pnlTabData";
-            pnlTabData.RowCount = 10;
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            pnlTabData.RowCount = 2;
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            pnlTabData.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             pnlTabData.Size = new Size(1233, 526);
             pnlTabData.TabIndex = 0;
             // 
-            // btnNewRij
+            // pnlData1
             // 
-            btnNewRij.Location = new Point(959, 471);
-            btnNewRij.Name = "btnNewRij";
-            btnNewRij.Size = new Size(233, 46);
-            btnNewRij.TabIndex = 5;
-            btnNewRij.Text = "Uitleg over het programma\r\nen ook wat wij hebben geprobeerd";
-            btnNewRij.UseVisualStyleBackColor = true;
-            btnNewRij.Click += btnNewRij_Click;
+            pnlData1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlData1.Controls.Add(lblPrestaties);
+            pnlData1.Controls.Add(lblWoonplaats);
+            pnlData1.Controls.Add(lblAdres);
+            pnlData1.Controls.Add(lblNaam);
+            pnlData1.Location = new Point(3, 3);
+            pnlData1.Name = "pnlData1";
+            pnlData1.Size = new Size(1227, 257);
+            pnlData1.TabIndex = 0;
+            // 
+            // lblPrestaties
+            // 
+            lblPrestaties.AutoSize = true;
+            lblPrestaties.Location = new Point(587, 200);
+            lblPrestaties.Name = "lblPrestaties";
+            lblPrestaties.Size = new Size(50, 20);
+            lblPrestaties.TabIndex = 3;
+            lblPrestaties.Text = "label4";
+            // 
+            // lblWoonplaats
+            // 
+            lblWoonplaats.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblWoonplaats.AutoSize = true;
+            lblWoonplaats.Location = new Point(587, 153);
+            lblWoonplaats.Name = "lblWoonplaats";
+            lblWoonplaats.Size = new Size(50, 20);
+            lblWoonplaats.TabIndex = 2;
+            lblWoonplaats.Text = "label3";
+            // 
+            // lblAdres
+            // 
+            lblAdres.AutoSize = true;
+            lblAdres.Location = new Point(587, 107);
+            lblAdres.Name = "lblAdres";
+            lblAdres.Size = new Size(50, 20);
+            lblAdres.TabIndex = 1;
+            lblAdres.Text = "label2";
+            // 
+            // lblNaam
+            // 
+            lblNaam.AutoSize = true;
+            lblNaam.Location = new Point(587, 55);
+            lblNaam.Name = "lblNaam";
+            lblNaam.Size = new Size(50, 20);
+            lblNaam.TabIndex = 0;
+            lblNaam.Text = "label1";
+            // 
+            // lblComment
+            // 
+            lblComment.AutoSize = true;
+            lblComment.Dock = DockStyle.Top;
+            lblComment.Location = new Point(3, 263);
+            lblComment.Name = "lblComment";
+            lblComment.Size = new Size(1227, 20);
+            lblComment.TabIndex = 1;
+            lblComment.Text = "label5";
+            lblComment.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // frmData
             // 
@@ -78,15 +123,23 @@ namespace WiebeRonnieRegistratie
             ClientSize = new Size(1233, 526);
             Controls.Add(pnlTabData);
             Name = "frmData";
-            Text = "Hier staat de data";
+            Text = "Hier staat de data van de student";
             pnlTabData.ResumeLayout(false);
+            pnlTabData.PerformLayout();
+            pnlData1.ResumeLayout(false);
+            pnlData1.PerformLayout();
             ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel pnlTabData;
-        private Button btnNewRij;
+        private TableLayoutPanel pnlTabData;
+        private Panel pnlData1;
+        private Label lblPrestaties;
+        private Label lblWoonplaats;
+        private Label lblAdres;
+        private Label lblNaam;
+        private Label lblComment;
     }
 }
